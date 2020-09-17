@@ -7,7 +7,7 @@
     <b-list-group ref="listOfTasks" class="taskList">
       <template v-if="show">
         <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in falseList" :key="index">
-          <h6 style="width: 85%; color: green">
+          <h6 style="width: 80%; color: green">
             {{index +1}}.
             {{todo.text}}
           </h6>
@@ -24,7 +24,7 @@
       </template>
       <template v-else>
         <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in trueList" :key="index">
-          <h6 style="width: 85%; color: red">{{index+1}}. {{todo.text}}</h6>
+          <h6 style="width: 80%; color: red">{{index+1}}. {{todo.text}}</h6>
           <button @click="markedTrue(todo.id)">
             <b-icon icon="check2-square" scale="1.5" variant="primary"></b-icon>
           </button>
@@ -127,5 +127,8 @@ export default {
 }
 .b-icon.bi {
   width: 2em;
+}
+button {
+  height: 38px;
 }
 </style>
