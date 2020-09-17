@@ -6,22 +6,34 @@
     </div>
     <b-list-group ref="listOfTasks" class="taskList">
       <template v-if="show">
-        <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in false1" :key="index">
+        <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in falseList" :key="index">
           <h6 style="width: 85%; color: green">
             {{index +1}}.
             {{todo.text}}
           </h6>
-          <b-icon @click="markedTrue(index)" icon="check2-square" scale="1.5" variant="success"></b-icon>
-          <b-icon @click="markedFalse(index)" icon="x-circle" scale="1.5" variant="primary"></b-icon>
-          <b-icon @click="deleteTask(index)" icon="trash" scale="1.5" variant="danger"></b-icon>
+          <button @click="markedTrue(todo.id)">
+            <b-icon icon="check2-square" scale="1.5" variant="success"></b-icon>
+          </button>
+          <button @click="markedFalse(todo.id)">
+            <b-icon icon="x-circle" scale="1.5" variant="primary"></b-icon>
+          </button>
+          <button @click="deleteTask(todo.id)">
+            <b-icon icon="trash" scale="1.5" variant="danger"></b-icon>
+          </button>
         </b-list-group-item>
       </template>
       <template v-else>
-        <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in true2" :key="index">
+        <b-list-group-item class="d-flex flex-wrap" v-for="(todo,index) in trueList" :key="index">
           <h6 style="width: 85%; color: red">{{index+1}}. {{todo.text}}</h6>
-          <b-icon id="asd" @click="markedTrue(index)" icon="check2-square" scale="1.5" variant="primary"></b-icon>
-          <b-icon @click="markedFalse(index)" icon="x-circle" scale="1.5" variant="warning"></b-icon>
-          <b-icon @click="deleteTask(index)" icon="trash" scale="1.5" variant="danger"></b-icon>
+          <button @click="markedTrue(todo.id)">
+            <b-icon icon="check2-square" scale="1.5" variant="primary"></b-icon>
+          </button>
+          <button @click="markedFalse(todo.id)">
+            <b-icon icon="x-circle" scale="1.5" variant="warning"></b-icon>
+          </button>
+          <button @click="deleteTask(todo.id)">
+            <b-icon icon="trash" scale="1.5" variant="danger"></b-icon>
+          </button>
         </b-list-group-item>
       </template>
     </b-list-group>
@@ -44,22 +56,30 @@ export default {
     show: false,
   }),
   computed: {
-    true2: function () {
+    trueList: function () {
       return this.todos.filter((e) => !e.completed);
     },
-    false1: function () {
+    falseList: function () {
       return this.todos.filter((e) => e.completed);
     },
   },
   methods: {
     addTask() {
       this.todosText = this.$refs.inputTask.value;
-      this.todos.push({ text: this.todosText, completed: false });
+      this.todos.push({
+        text: this.todosText,
+        completed: false,
+        id: Math.random(),
+      });
       this.todosText = "";
       this.$refs.inputTask.value = "";
     },
-    deleteTask(index) {
-      this.todos.splice(index, 1);
+    deleteTask(todo) {
+            for(let i =0;i<this.todos.length;i++) {
+        if(todo == this.todos[i].id){
+          this.todos.splice(i, 1);
+        }
+      }
     },
     ShowNotCompleted() {
       this.show = false;
@@ -67,11 +87,19 @@ export default {
     showCompleted() {
       this.show = true;
     },
-    markedTrue(index) {
-      this.todos[index].completed = true;
+    markedTrue(todo) {
+   this.todos.forEach((el) => {
+        if (todo == el.id) {
+          el.completed = true;
+        }
+      });
     },
-    markedFalse(index) {
-      this.todos[index].completed = false;
+    markedFalse(todo) {
+      this.todos.forEach((el) => {
+        if (todo == el.id) {
+          el.completed = false;
+        }
+      });
     },
   },
 
